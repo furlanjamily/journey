@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 import { ClientError } from '../errors/client-error'
 import { env } from '../env'
-
+s
 export async function confirmParticipants(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
     '/participants/:participantId/confirm',
