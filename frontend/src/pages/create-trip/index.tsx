@@ -1,11 +1,12 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InviteGuestModal } from "./invite-guests-modal";
+import { InviteGuestsModal } from "./invite-guests-modal";
 import { ConfirmTripModal } from "./confirm-trip-modal";
 import { DestinationAndDateStep } from "./steps/destination-and-date-step";
 import { InviteGuestsStep } from "./steps/invite-guests-step";
 import { DateRange } from "react-day-picker";
 import { api } from "../../lib/axios";
+import { Plane } from "lucide-react";
 
 export function CreateTripPage() {
   const navigate = useNavigate()
@@ -19,9 +20,7 @@ export function CreateTripPage() {
   const [ownerEmail, setOwnerEmail] = useState('')
   const [eventStartAndEndDates, setEventStartAndEndDates] = useState<DateRange | undefined>()
 
-  const [emailsToInvite, setEmailsToInvite] = useState([
-    'uendelpapa@gmail.com'
-  ])
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
 
   function openGuestsInput() {
     setIsGuestsInputOpen(true)
@@ -32,6 +31,7 @@ export function CreateTripPage() {
   }
 
   function openGuestsModal() {
+    setEmailsToInvite([]) // Reinicializa a lista de e-mails ao abrir o modal
     setIsGuestsModalOpen(true)
   }
 
@@ -56,23 +56,23 @@ export function CreateTripPage() {
     console.log(ownerName)
     console.log(ownerEmail)
 
-    if (!destination){
+    if (!destination) {
       return
     }
 
-    if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to){
+    if (!eventStartAndEndDates?.from || !eventStartAndEndDates?.to) {
       return
     }
 
-    if(emailsToInvite.length === 0){
+    if (emailsToInvite.length === 0) {
       return
     }
 
-    if (!ownerName || !ownerEmail){
+    if (!ownerName || !ownerEmail) {
       return
     }
 
-    const response = await api.post('/trips',{
+    const response = await api.post('/trips', {
       destination,
       starts_at: eventStartAndEndDates?.from,
       ends_at: eventStartAndEndDates?.to,
@@ -86,12 +86,7 @@ export function CreateTripPage() {
     navigate(`/trips/${tripId}`)
   }
 
-  function addNewEmailToInvite(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
-    const data = new FormData(e.currentTarget)
-    const email = data.get('email')?.toString()
-
+  function addNewEmailToInvite(email: string) {
     if (!email) {
       return
     }
@@ -101,8 +96,6 @@ export function CreateTripPage() {
     }
 
     setEmailsToInvite((state) => [...state, email])
-
-    e.currentTarget.reset()
   }
 
   function removeEmailFromInvites(emailToRemove: string) {
@@ -114,12 +107,12 @@ export function CreateTripPage() {
   return (
     <div className="flex h-screen justify-center items-center bg-pattern bg-no-repeat bg-center">
       <div className="max-w-3xl w-full px-6 text-center space-y-10">
-        <div className="flex flex-col items-center gap-3">
-          <img src="/logo.svg" alt="plann.er" />
-          <p className="text-zinc-300 text-lg">
-            Convide seus amigos e planeje sua próxima viagem!
-          </p>
+        <div className="flex flex-wrap justify-center items-center gap-1">
+          <Plane className="size-10 text-red-600" />  <p className="flex text-3xl font-medium">Trip<span className="font-black text-red-600">On</span></p>
         </div>
+        <p className="text-zinc-300 text-lg">
+          Convide seus amigos e planeje sua próxima viagem!
+        </p>
 
         <div className="space-y-4">
           <DestinationAndDateStep
@@ -147,7 +140,7 @@ export function CreateTripPage() {
       </div>
 
       {isGuestsModalOpen && (
-        <InviteGuestModal
+        <InviteGuestsModal
           emailsToInvite={emailsToInvite}
           addNewEmailToInvite={addNewEmailToInvite}
           closeGuestsModal={closeGuestsModal}
@@ -161,6 +154,8 @@ export function CreateTripPage() {
           createTrip={createTrip}
           setOwnerName={setOwnerName}
           setOwnerEmail={setOwnerEmail}
+          destinationName={destination}
+          startAndEndDates={eventStartAndEndDates}
         />
       )}
     </div>

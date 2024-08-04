@@ -25,7 +25,7 @@ export function TripDetailsPage() {
         <div className="flex-1 space-y-6 px-4">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-semibold">Atividades</h2>
-            <button onClick={openCreateActivityModal} className="flex font-medium items-center bg-lime-300 text-lime-950 rounded-lg px-5 py-2 hover:bg-lime-400 gap-2">
+            <button onClick={openCreateActivityModal} className="flex font-medium items-center bg-red-600 text-zinc-200 rounded-lg px-5 py-2 hover:bg-red-800 gap-2">
               Cadastrar atividade
               <Plus className="size-5" />
             </button>

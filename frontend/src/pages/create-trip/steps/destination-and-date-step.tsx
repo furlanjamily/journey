@@ -23,32 +23,54 @@ export function DestinationAndDateStep({
   setEventStartAndEndDates,
 }: DestinationAndDateStepProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-  
+  const [destinationWarning, setDestinationWarning] = useState(false)
+  const [initialInput, setInitialInput] = useState(true)
 
   function openDatePicker() {
-    return setIsDatePickerOpen(true)
+    setIsDatePickerOpen(true)
   }
   function closeDatePicker() {
-    return setIsDatePickerOpen(false)
+    setIsDatePickerOpen(false)
+  }
+
+
+  function handleDestinationChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value
+    setDestination(value)
+    if (value.length === 0) {
+      setInitialInput(true)
+    }
+    else if(value.length > 0){
+      setInitialInput(false)
+
+    }
+    if (value.length < 4) {
+      setDestinationWarning(true)
+    } else {
+      setDestinationWarning(false)
+    }
   }
 
   const displayedDate = eventStartAndEndDates && eventStartAndEndDates.from && eventStartAndEndDates.to
-   ? format(eventStartAndEndDates.from, " d' de' LLL").concat(' até').concat(format(eventStartAndEndDates.to, " d' de' LLL")) 
-   : null
-
+    ? format(eventStartAndEndDates.from, " d' de' LLL").concat(' até').concat(format(eventStartAndEndDates.to, " d' de' LLL"))
+    : null
 
   return (
-
     <div className="flex h-16 items-center bg-zinc-900 px-4 rounded-xl shadow-shape gap-3">
       <div className="flex flex-1 items-center gap-2">
         <MapPin className="size-5 text-zinc-400" />
-        <input
-          type="text"
-          placeholder="Para onde você vai?"
-          disabled={isGuestsInputOpen}
-          className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
-          onChange={event => setDestination(event.target.value)}
-        />
+        <div className="flex flex-col flex-1">
+          <input
+            type="text"
+            placeholder="Para onde você vai?"
+            disabled={isGuestsInputOpen}
+            className="bg-transparent text-lg placeholder-zinc-400 outline-none"
+            onChange={handleDestinationChange}
+          />
+          {destinationWarning && (
+            <span className="text-red-500 text-sm mt-1">{destinationWarning}</span>
+          )}
+        </div>
       </div>
 
       <button onClick={openDatePicker} disabled={isGuestsInputOpen} className="flex w-[240px] items-center gap-2 text-left">
@@ -59,7 +81,7 @@ export function DestinationAndDateStep({
       </button>
 
       {isDatePickerOpen && (
-        <div className="flex justify-center items-center fixed inset-0 bg-black/60 ">
+        <div className="flex justify-center items-center fixed inset-0 bg-black/60 z-40">
           <div className="rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -83,10 +105,18 @@ export function DestinationAndDateStep({
           <Settings2 className="size-5" />
         </button>
       ) : (
-        <Button variant='primary' size='default' onClick={openGuestsInput} className="flex font-medium items-center bg-lime-300 text-lime-950 rounded-lg px-5 py-2 hover:bg-lime-400 gap-2">
+        <Button variant='primary' size='default' onClick={openGuestsInput} disabled={destinationWarning && !initialInput} className="flex font-medium items-center bg-lime-300 text-lime-950 rounded-lg px-5 py-2 hover:bg-lime-400 gap-2">
           Continuar
           <ArrowRight className="size-5" />
         </Button>
+      )}
+      {destinationWarning && !initialInput &&( 
+        <div className='absolute mt-24 items-center ml-44 z-auto'>
+          <span className='text-xs text-red-600'>
+            O destino precisa ter pelo menos 4 caracteres!
+          </span>
+        </div>
+
       )}
     </div>
   )
