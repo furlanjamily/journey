@@ -1,12 +1,12 @@
-import { X, AtSign, Plus } from 'lucide-react'
-import { FormEvent, useState } from 'react'
-import { Button } from '../../components/button'
+import { X, AtSign, Plus } from 'lucide-react';
+import { FormEvent, useState } from 'react';
+import { Button } from '../../components/button';
 
 interface InviteGuestsModalProps {
-  closeGuestsModal: () => void
-  emailsToInvite: string[]
-  addNewEmailToInvite: (email: string) => void
-  removeEmailFromInvites: (email: string) => void
+  closeGuestsModal: () => void;
+  emailsToInvite: string[];
+  addNewEmailToInvite: (email: string) => void;
+  removeEmailFromInvites: (email: string) => void;
 }
 
 export function InviteGuestsModal({
@@ -15,19 +15,19 @@ export function InviteGuestsModal({
   addNewEmailToInvite,
   removeEmailFromInvites,
 }: InviteGuestsModalProps) {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email) {
-      addNewEmailToInvite(email)
-      setEmail('')
+      addNewEmailToInvite(email);
+      setEmail('');
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center fixed inset-0 bg-black/60">
-      <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+      <div className="w-full max-w-[640px] rounded-xl py-6 px-4 mobile:px-6 shadow-shape bg-zinc-900 space-y-5 border border-zinc-800">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Selecionar convidados</h2>
@@ -59,9 +59,9 @@ export function InviteGuestsModal({
 
         <form
           onSubmit={handleSubmit}
-          className="flex items-center p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg gap-2"
+          className="flex flex-col items-stretch gap-2"
         >
-          <div className="flex flex-1 items-center px-2 gap-2">
+          <div className="flex items-center p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg">
             <AtSign className="w-5 h-5 text-zinc-400" />
             <input
               type="email"
@@ -69,7 +69,7 @@ export function InviteGuestsModal({
               placeholder="Digite o e-mail do convidado"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none"
+              className="flex-1 bg-transparent text-lg placeholder-zinc-400 outline-none px-2"
               required
             />
           </div>
@@ -85,5 +85,5 @@ export function InviteGuestsModal({
         </form>
       </div>
     </div>
-  )
+  );
 }

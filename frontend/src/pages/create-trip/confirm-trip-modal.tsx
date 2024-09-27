@@ -22,13 +22,12 @@ export function ConfirmTripModal({
   startAndEndDates
 }: ConfirmTripModalProps) {
   const displayedDate = startAndEndDates && startAndEndDates.from && startAndEndDates.to
-   ? format(startAndEndDates.from, " d' de' LLL").concat(' até').concat(format(startAndEndDates.to, " d' de' LLL")) 
-   : null
-
+    ? format(startAndEndDates.from, " d' de' LLL").concat(' até').concat(format(startAndEndDates.to, " d' de' LLL"))
+    : null
 
   return (
     <div className="flex justify-center items-center fixed inset-0 bg-black/60">
-      <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+      <div className="w-full max-w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5 mx-4 md:mx-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Confirmar criação da viagem</h2>
@@ -70,4 +69,3 @@ export function ConfirmTripModal({
     </div>
   )
 }
-              

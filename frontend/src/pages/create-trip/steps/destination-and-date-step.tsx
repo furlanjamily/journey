@@ -40,7 +40,7 @@ export function DestinationAndDateStep({
     if (value.length === 0) {
       setInitialInput(true)
     }
-    else if(value.length > 0){
+    else if (value.length > 0) {
       setInitialInput(false)
 
     }
@@ -56,7 +56,9 @@ export function DestinationAndDateStep({
     : null
 
   return (
-    <div className="flex h-16 items-center bg-zinc-900 px-4 rounded-xl shadow-shape gap-3">
+    <>
+    {/* Para telas maiores ou iguais a tablet */}
+    <div className="hidden tablet:flex h-16 items-center bg-zinc-900 px-4 rounded-xl shadow-shape gap-3">
       <div className="flex flex-1 items-center gap-2">
         <MapPin className="size-5 text-zinc-400" />
         <div className="flex flex-col flex-1">
@@ -91,7 +93,6 @@ export function DestinationAndDateStep({
                 </button>
               </div>
             </div>
-
             <DayPicker mode="range" selected={eventStartAndEndDates} onSelect={setEventStartAndEndDates} />
           </div>
         </div>
@@ -110,14 +111,83 @@ export function DestinationAndDateStep({
           <ArrowRight className="size-5" />
         </Button>
       )}
-      {destinationWarning && !initialInput &&( 
-        <div className='absolute mt-24 items-center ml-44 z-auto'>
-          <span className='text-xs text-red-600'>
+    </div>
+
+    {/* Para telas móveis */}
+    <div className="flex flex-col gap-4 p-4 bg-zinc-900 rounded-xl shadow-shape mobile:flex-col tablet:hidden">
+      <div className="flex flex-col w-full">
+        <div className="flex items-center gap-2">
+          <MapPin className="size-5 text-zinc-400" />
+          <input
+            type="text"
+            placeholder="Para onde você vai?"
+            disabled={isGuestsInputOpen}
+            className="w-full bg-transparent text-lg placeholder-zinc-400 outline-none"
+            onChange={handleDestinationChange}
+          />
+        </div>
+        {destinationWarning && (
+          <span className="text-red-500 text-sm mt-1">
             O destino precisa ter pelo menos 4 caracteres!
           </span>
-        </div>
+        )}
+      </div>
 
-      )}
+      <div className="flex flex-col w-full mt-4">
+        <button
+          onClick={openDatePicker}
+          disabled={isGuestsInputOpen}
+          className="w-full flex items-center gap-2 text-left bg-transparent text-lg placeholder-zinc-400 outline-none"
+        >
+          <Calendar className="size-5 text-zinc-400" />
+          <span>
+            {displayedDate || 'Quando?'}
+          </span>
+        </button>
+        {isDatePickerOpen && (
+          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60">
+            <div className="rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+              <div className="flex justify-between">
+                <h2 className="text-lg font-semibold">Selecione a data</h2>
+                <button onClick={closeDatePicker}>
+                  <X className="size-5 text-zinc-400" />
+                </button>
+              </div>
+              <DayPicker
+                mode="range"
+                selected={eventStartAndEndDates}
+                onSelect={setEventStartAndEndDates}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-center w-full mt-4">
+        {isGuestsInputOpen ? (
+          <button
+            onClick={closeGuestsInput}
+            className="flex items-center justify-center font-medium bg-zinc-800 text-zinc-200 rounded-lg px-5 py-2 hover:bg-zinc-700 gap-2"
+          >
+            <Settings2 className="size-5" />
+            Alterar local/data
+          </button>
+        ) : (
+          <Button
+            variant="primary"
+            size="default"
+            onClick={openGuestsInput}
+            disabled={destinationWarning && !initialInput}
+            className="flex items-center justify-center font-medium bg-lime-300 text-lime-950 rounded-lg px-5 py-2 hover:bg-lime-400 gap-2"
+          >
+            <ArrowRight className="size-5" />
+            Continuar
+          </Button>
+        )}
+      </div>
     </div>
+  </>
+
+
   )
 }
