@@ -1,41 +1,42 @@
-import { X, Tag, Calendar } from "lucide-react"
-import { Button } from "../../components/button"
-import { FormEvent } from "react"
-import { api } from "../../lib/axios"
-import { useParams } from "react-router-dom"
+import { X, Tag, Calendar } from "lucide-react";
+import { Button } from "../../components/button";
+import { FormEvent } from "react";
+import { api } from "../../lib/axios";
+import { useParams } from "react-router-dom";
 
 interface createActivityModalProps {
-  closeCreateActivityModal: () => void
+  closeCreateActivityModal: () => void;
 }
 
 export function CreateActivityModal({
   closeCreateActivityModal
 }: createActivityModalProps) {
-  const {tripId} = useParams()
+  const { tripId } = useParams();
 
   async function createActivity(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const data = new FormData(event.currentTarget)
+    const data = new FormData(event.currentTarget);
 
-    const title = data.get('title')?.toString()
-    const occurs_at = data.get('occurs_at')?.toString()
+    const title = data.get('title')?.toString();
+    const occurs_at = data.get('occurs_at')?.toString();
 
     await api.post(`/trips/${tripId}/activities`, {
       title,
       occurs_at,
-    })
+    });
 
-    console.log(occurs_at)
+    console.log(occurs_at);
 
-    window.document.location.reload()
+    window.document.location.reload();
   }
 
   return (
-    <div className="flex justify-center items-center fixed inset-0 bg-black/60 ">
-      <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
+    <div className="flex justify-center items-center fixed inset-0 bg-black/60">
+      {/* Adicione margens com m-4 para um espaçamento geral */}
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl m-4 rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
         <div className="space-y-2">
-          <div className="flex = items-center justify-between">
+          <div className="flex items-center justify-between px-7">
             <h2 className="text-lg font-semibold">Cadastrar atividade</h2>
             <button onClick={closeCreateActivityModal}>
               <X className="size-5 text-zinc-400" />
@@ -70,5 +71,5 @@ export function CreateActivityModal({
         </form>
       </div>
     </div>
-  )
+  );
 }

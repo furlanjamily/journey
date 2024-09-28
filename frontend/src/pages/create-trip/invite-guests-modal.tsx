@@ -27,7 +27,7 @@ export function InviteGuestsModal({
 
   return (
     <div className="flex justify-center items-center fixed inset-0 bg-black/60">
-      <div className="w-full max-w-[640px] rounded-xl py-6 px-4 mobile:px-6 shadow-shape bg-zinc-900 space-y-5 border border-zinc-800">
+      <div className="w-full max-w-[640px] md:w-full rounded-xl py-6 px-4 md:px-6 shadow-shape bg-zinc-900 border border-zinc-800 space-y-5 mx-4 md:mx-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Selecionar convidados</h2>
@@ -57,10 +57,7 @@ export function InviteGuestsModal({
 
         <div className="w-full h-px bg-zinc-800" />
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-stretch gap-2"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col items-stretch gap-2">
           <div className="flex items-center p-2.5 bg-zinc-950 border border-zinc-800 rounded-lg">
             <AtSign className="w-5 h-5 text-zinc-400" />
             <input
