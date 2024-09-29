@@ -22,7 +22,6 @@ export function TripDetailsPage() {
       <DestinationAndDateHeader />
 
       <main className="flex flex-col laptop:flex-row gap-16">
-        {/* Coluna principal que se ajusta em dispositivos móveis e laptops */}
         <div className="flex-1 space-y-6 px-4">
           <div className="flex flex-col mobile:flex-col laptop:flex-row items-start justify-between gap-4">
             <h2 className="text-3xl font-semibold laptop:text-2xl mobile:text-xl laptop:mb-4">Atividades</h2>
